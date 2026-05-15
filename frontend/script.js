@@ -5,7 +5,7 @@ const API_URL = '/api';
 let currentSessionId = null;
 
 // DOM elements
-let chatMessages, chatInput, sendButton, totalCourses, courseTitles;
+let chatMessages, chatInput, sendButton, totalCourses, courseTitles, themeToggle;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,11 +15,49 @@ document.addEventListener('DOMContentLoaded', () => {
     sendButton = document.getElementById('sendButton');
     totalCourses = document.getElementById('totalCourses');
     courseTitles = document.getElementById('courseTitles');
-    
+    themeToggle = document.getElementById('themeToggle');
+
+    initTheme();
     setupEventListeners();
     createNewSession();
     loadCourseStats();
 });
+
+// Theme handling — the pre-paint script in index.html has already applied
+// the saved/system theme to <html>. This just syncs the button state.
+function initTheme() {
+    syncThemeToggleState();
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+}
+
+function getCurrentTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+}
+
+function toggleTheme() {
+    const next = getCurrentTheme() === 'light' ? 'dark' : 'light';
+    if (next === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+    }
+    try { localStorage.setItem('theme', next); } catch (_) {}
+    syncThemeToggleState();
+}
+
+function syncThemeToggleState() {
+    if (!themeToggle) return;
+    const isLight = getCurrentTheme() === 'light';
+    // aria-pressed reflects "light mode active"; label describes the action the click will perform
+    themeToggle.setAttribute('aria-pressed', String(isLight));
+    themeToggle.setAttribute(
+        'aria-label',
+        isLight ? 'Switch to dark theme' : 'Switch to light theme'
+    );
+}
 
 // Event Listeners
 function setupEventListeners() {
