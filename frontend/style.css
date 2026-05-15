@@ -7,7 +7,7 @@
     padding: 0;
 }
 
-/* CSS Variables */
+/* CSS Variables — Dark Theme (default) */
 :root {
     --primary-color: #2563eb;
     --primary-hover: #1d4ed8;
@@ -24,6 +24,73 @@
     --focus-ring: rgba(37, 99, 235, 0.2);
     --welcome-bg: #1e3a5f;
     --welcome-border: #2563eb;
+    --code-bg: rgba(0, 0, 0, 0.2);
+    --error-text: #f87171;
+    --error-bg: rgba(239, 68, 68, 0.1);
+    --error-border: rgba(239, 68, 68, 0.2);
+    --success-text: #4ade80;
+    --success-bg: rgba(34, 197, 94, 0.1);
+    --success-border: rgba(34, 197, 94, 0.2);
+}
+
+/* Light Theme overrides */
+[data-theme="light"] {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --background: #f8fafc;
+    --surface: #ffffff;
+    --surface-hover: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --border-color: #cbd5e1;
+    --user-message: #2563eb;
+    --assistant-message: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.08);
+    --focus-ring: rgba(37, 99, 235, 0.25);
+    --welcome-bg: #dbeafe;
+    --welcome-border: #2563eb;
+    --code-bg: rgba(15, 23, 42, 0.06);
+    --error-text: #b91c1c;
+    --error-bg: rgba(220, 38, 38, 0.08);
+    --error-border: rgba(220, 38, 38, 0.25);
+    --success-text: #15803d;
+    --success-bg: rgba(34, 197, 94, 0.1);
+    --success-border: rgba(34, 197, 94, 0.3);
+}
+
+/* Smooth theme transitions for color-related properties.
+   Targets every element that explicitly binds a themed CSS variable, so
+   none of them snap when --background / --text-* / --border-color / etc.
+   flip after a toggle. */
+body,
+.sidebar,
+.chat-main,
+.chat-container,
+.chat-messages,
+.chat-input-container,
+.main-content,
+.message-content,
+.message-content code,
+.message-content pre,
+.message-meta,
+.subtitle,
+.stat-item,
+.stat-value,
+.stat-label,
+.course-title-item,
+.course-titles-header,
+.sources-collapsible,
+.sources-content,
+.error-message,
+.success-message,
+.suggested-item,
+#chatInput,
+.theme-toggle {
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 /* Base Styles */
@@ -296,7 +363,7 @@ header h1 {
 }
 
 .message-content code {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--code-bg);
     padding: 0.125rem 0.25rem;
     border-radius: 3px;
     font-family: 'Fira Code', 'Consolas', monospace;
@@ -304,7 +371,7 @@ header h1 {
 }
 
 .message-content pre {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--code-bg);
     padding: 0.75rem;
     border-radius: 4px;
     overflow-x: auto;
@@ -448,21 +515,21 @@ header h1 {
 
 /* Error Message */
 .error-message {
-    background: rgba(239, 68, 68, 0.1);
-    color: #f87171;
+    background: var(--error-bg);
+    color: var(--error-text);
     padding: 0.75rem 1.25rem;
     border-radius: 8px;
-    border: 1px solid rgba(239, 68, 68, 0.2);
+    border: 1px solid var(--error-border);
     margin: 0.5rem 0;
 }
 
 /* Success Message */
 .success-message {
-    background: rgba(34, 197, 94, 0.1);
-    color: #4ade80;
+    background: var(--success-bg);
+    color: var(--success-text);
     padding: 0.75rem 1.25rem;
     border-radius: 8px;
-    border: 1px solid rgba(34, 197, 94, 0.2);
+    border: 1px solid var(--success-border);
     margin: 0.5rem 0;
 }
 
@@ -760,5 +827,117 @@ details[open] .suggested-header::before {
 @media (max-width: 1024px) {
     .sidebar {
         width: 280px;
+    }
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.theme-toggle:hover {
+    background: var(--surface-hover);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.theme-toggle:active {
+    transform: translateY(0);
+}
+
+.theme-toggle:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring);
+    border-color: var(--primary-color);
+}
+
+.theme-toggle:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Icon stacking + animated swap */
+.theme-icon {
+    position: absolute;
+    transition:
+        opacity 0.3s ease,
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Default (dark theme): show moon, hide sun */
+.theme-icon-sun {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+}
+
+.theme-icon-moon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+/* Light theme: show sun, hide moon */
+[data-theme="light"] .theme-icon-sun {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+[data-theme="light"] .theme-icon-moon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+}
+
+@media (max-width: 768px) {
+    .theme-toggle {
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Respect user's reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .theme-icon,
+    body,
+    .sidebar,
+    .chat-main,
+    .chat-container,
+    .chat-messages,
+    .chat-input-container,
+    .main-content,
+    .message-content,
+    .message-content code,
+    .message-content pre,
+    .message-meta,
+    .subtitle,
+    .stat-item,
+    .stat-value,
+    .stat-label,
+    .course-title-item,
+    .course-titles-header,
+    .sources-collapsible,
+    .sources-content,
+    .error-message,
+    .success-message,
+    .suggested-item,
+    #chatInput,
+    .theme-toggle {
+        transition: none;
     }
 }
