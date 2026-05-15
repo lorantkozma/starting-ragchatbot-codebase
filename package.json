@@ -1,0 +1,15 @@
+{
+  "name": "rag-chatbot-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Frontend tooling for the RAG chatbot UI (formatting / quality checks only).",
+  "scripts": {
+    "format": "prettier --write \"frontend/**/*.{js,css,html,json}\" \"*.{md,json}\"",
+    "format:check": "prettier --check \"frontend/**/*.{js,css,html,json}\" \"*.{md,json}\"",
+    "format:frontend": "prettier --write \"frontend/**/*.{js,css,html}\"",
+    "quality": "npm run format:check"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  }
+}
