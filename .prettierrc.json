@@ -1,0 +1,27 @@
+{
+    "tabWidth": 4,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "printWidth": 100,
+    "trailingComma": "es5",
+    "arrowParens": "always",
+    "endOfLine": "lf",
+    "bracketSpacing": true,
+    "htmlWhitespaceSensitivity": "css",
+    "overrides": [
+        {
+            "files": "*.md",
+            "options": {
+                "tabWidth": 2,
+                "proseWrap": "preserve"
+            }
+        },
+        {
+            "files": ["*.json", "*.yml", "*.yaml"],
+            "options": {
+                "tabWidth": 2
+            }
+        }
+    ]
+}

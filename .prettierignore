@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Python backend - out of scope for frontend formatter
+backend/
+main.py
+*.py
+uv.lock
+pyproject.toml
+.python-version
+
+# Generated / data
+backend/chroma_db/
+docs/
+
+# Env / secrets
+.env
+backend/.env
+
+# Build / cache
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Generated docs (we maintain manually)
+frontend-changes.md
